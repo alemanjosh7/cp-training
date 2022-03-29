@@ -78,7 +78,7 @@ bool intersect(Point a, Point b, Point c, Point d) {
 }
 
 void solve() {
-    
+    //not finished
     Point p[4];
     F0R(i, n) {
         cin >> p[i].x >> p[i].y;
