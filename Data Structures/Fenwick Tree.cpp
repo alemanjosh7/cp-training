@@ -61,54 +61,41 @@ template<typename x> void _print(x& t) { cerr << "{"; for (int i = 0;i < (int)t.
 template<typename x, typename... y> void _print(x a, y... b) { _print(a);if (sizeof...(b)) cerr << ", ";_print(b...); }
 #define dbg(x...) cerr<<"["<<#x<<"] = [";_print(x);cerr<<"]\n";
 int test;
+const int MXN = 2e5 + 5;
+int n, q;
+vl bit(MXN), a(MXN);
 
-struct FenwickTree {
-    vi bit;
-    int n;
-    FenwickTree(int n) {
-        this->n = n;
-        bit.assign(n + 1, 0);
-    }
+int lsb(int i) {
+    return i & (-i);
+}
 
-    int lsb(int x) {
-        return x & (-x);
-    }
+void upd(int i, ll v) {
+    for (; i <= n; i += lsb(i)) bit[i] += v;
+}
 
-    int sum(int idx) {
-        int ret = 0;
-        while (idx) {
-            ret += bit[idx];
-            idx -= lsb(idx);
-        }
-        return ret;
-    }
-
-    int query(int l, int r) {
-        return sum(r) - sum(l - 1);
-    }
-
-    void add(int idx, int delta) {
-        while (idx <= n) {
-            bit[idx] += delta;
-            idx += lsb(idx);
-        }
-    }
-
-};
+ll qry(int i) {
+    ll sum = 0;
+    for (; i > 0; i -= lsb(i)) sum += bit[i];
+    return sum;
+}
 
 void solve() {
 
-    int n; cin >> n;
-    FenwickTree ft(n);
-    F0R(i, n) {
-        int x; cin >> x;
-        ft.add(i + 1, x);
+    cin >> n >> q;
+    FOR(i, 1, n + 1) {
+        cin >> a[i];
+        upd(i, a[i]);
     }
-
-    int q; cin >> q;
     while (q--) {
-        int l, r; cin >> l >> r;
-        cout << ft.query(l, r) << "\n";
+        int op, l, r; cin >> op >> l >> r;
+        if (op == 1) {
+            upd(l, -a[l]);
+            a[l] = r;
+            upd(l, a[l]);
+        }
+        else {
+            cout << qry(r) - qry(l - 1) << "\n";
+        }
     }
 
 }
@@ -116,7 +103,7 @@ void solve() {
 int main() {
     setIO("");
     int T = 1;
-    cin >> T;
+    // cin >> T;
     for (test = 1; test <= T; test++) solve();
     return 0;
 }
