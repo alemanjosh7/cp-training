@@ -1,9 +1,9 @@
-vector<pi> adj[MXN];
+vector<pl> adj[MXN];
 vl dist;
 int n;
-void dijkstra(int u) {
+void dijkstra(ll u) {
     dist.assign(n, INF);
-    priority_queue<pi, vpi, greater<pi> > q;
+    priority_queue<pl, vpl, greater<pl> > q;
     dist[u] = 0;
     q.push({ 0, u });
     while (!q.empty()) {
@@ -12,8 +12,10 @@ void dijkstra(int u) {
         each(v, adj[u]) {
             if (w + v.s < dist[v.f]) {
                 dist[v.f] = w + v.s;
-                q.push({ dist[v.f], v.f })
+                q.push({ dist[v.f], v.f });
             }
         }
     }
 }
+
+
