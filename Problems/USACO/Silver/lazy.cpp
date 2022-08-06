@@ -2,7 +2,7 @@
 using namespace std;
 
 using ll = long long;
-// #define int ll
+#define int ll
 using db = long double;
 using str = string;
 using pi = pair<int, int>;
@@ -64,40 +64,44 @@ template<typename x> void _print(x& t) { cerr << "{"; for (int i = 0;i < (int)t.
 template<typename x, typename... y> void _print(x a, y... b) { _print(a);if (sizeof...(b)) cerr << ", ";_print(b...); }
 #define dbg(x...) cerr<<"["<<#x<<"] = [";_print(x);cerr<<"]\n";
 int test;
-
-
-/*
-
-Hoof beats scissors (since a hoof can smash a pair of scissors)
-scissors beats paper (since scissors can cut paper) and
-paper beats hoof (since the hoof can get a papercut).
-
-*/
+const int MXN = 400 * 400 + 5;
+bitset<MXN> vis;
+int n, k;
+vector<vi> mat;
+int sum;
+void ff(int i, int j, int cnt) {
+    if (cnt > k || i >= n || i < 0 || j >= n || j < 0 || vis[i * n + j]) return;
+    sum += mat[i][j];
+    vis[i * n + j] = 1;
+    ++cnt;
+    ff(i + 1, j, cnt);
+    ff(i, j + 1, cnt);
+    ff(i - 1, j, cnt);
+    ff(i, j - 1, cnt);
+}
 
 void solve() {
 
-    int n; cin >> n;
-    vector<vi> p(n + 1, vi(3, 0));
-    str s = { 'P', 'H', 'S' };
+    cin >> n >> k;
+    mat = vector<vi>(n, vi(n));
     F0R(i, n) {
-        char c; cin >> c;
-        F0R(j, 3) p[i + 1][j] = p[i][j] + (s[j] == c);
+        F0R(j, n) cin >> mat[i][j];
     }
     int ans = 0;
     F0R(i, n) {
-        F0R(j, 3) {
-            F0R(k, 3) {
-                ans = max(ans, p[i][j] + p[n][k] - p[i][k]);
-            }
+        F0R(j, n) {
+            sum = 0;
+            vis.reset();
+            ff(i, j, 0);
+            ans = max(ans, sum);
         }
     }
 
-    cout << ans << "\n";
-
+    cout << ans;
 }
 
 signed main() {
-    setIO("hps");
+    setIO("lazy");
     int T = 1;
     // cin >> T;
     for (test = 1; test <= T; test++) solve();

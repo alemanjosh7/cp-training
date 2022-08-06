@@ -2,7 +2,7 @@
 using namespace std;
 
 using ll = long long;
-// #define int ll
+#define int ll
 using db = long double;
 using str = string;
 using pi = pair<int, int>;
@@ -65,39 +65,26 @@ template<typename x, typename... y> void _print(x a, y... b) { _print(a);if (siz
 #define dbg(x...) cerr<<"["<<#x<<"] = [";_print(x);cerr<<"]\n";
 int test;
 
-
-/*
-
-Hoof beats scissors (since a hoof can smash a pair of scissors)
-scissors beats paper (since scissors can cut paper) and
-paper beats hoof (since the hoof can get a papercut).
-
-*/
-
 void solve() {
 
     int n; cin >> n;
-    vector<vi> p(n + 1, vi(3, 0));
-    str s = { 'P', 'H', 'S' };
+    vi a(n);
+    each(x, a) cin >> x;
+
+    int cnt = 0;
+    sort(rall(a));
     F0R(i, n) {
-        char c; cin >> c;
-        F0R(j, 3) p[i + 1][j] = p[i][j] + (s[j] == c);
-    }
-    int ans = 0;
-    F0R(i, n) {
-        F0R(j, 3) {
-            F0R(k, 3) {
-                ans = max(ans, p[i][j] + p[n][k] - p[i][k]);
-            }
+        if (a[i] >= cnt) {
+            ++cnt;
         }
     }
 
-    cout << ans << "\n";
+    cout << cnt << "\n";
 
 }
 
 signed main() {
-    setIO("hps");
+    setIO("lemonade");
     int T = 1;
     // cin >> T;
     for (test = 1; test <= T; test++) solve();

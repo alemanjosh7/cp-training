@@ -2,7 +2,7 @@
 using namespace std;
 
 using ll = long long;
-// #define int ll
+#define int ll
 using db = long double;
 using str = string;
 using pi = pair<int, int>;
@@ -65,39 +65,41 @@ template<typename x, typename... y> void _print(x a, y... b) { _print(a);if (siz
 #define dbg(x...) cerr<<"["<<#x<<"] = [";_print(x);cerr<<"]\n";
 int test;
 
-
-/*
-
-Hoof beats scissors (since a hoof can smash a pair of scissors)
-scissors beats paper (since scissors can cut paper) and
-paper beats hoof (since the hoof can get a papercut).
-
-*/
-
 void solve() {
 
     int n; cin >> n;
-    vector<vi> p(n + 1, vi(3, 0));
-    str s = { 'P', 'H', 'S' };
-    F0R(i, n) {
-        char c; cin >> c;
-        F0R(j, 3) p[i + 1][j] = p[i][j] + (s[j] == c);
+    vi a(n);
+    int sum = 0;
+    each(x, a) {
+        cin >> x;
+        sum += x;
     }
-    int ans = 0;
-    F0R(i, n) {
-        F0R(j, 3) {
-            F0R(k, 3) {
-                ans = max(ans, p[i][j] + p[n][k] - p[i][k]);
-            }
+    vi p(n + 1, 1e9);
+    for (int i = n - 1; i >= 0; i--) {
+        p[i] = min(p[i + 1], a[i]);
+    }
+    int ans = 0, best_den = 1, temp = sum;
+    F0R(i, n - 2) {
+        sum -= a[i];
+        if (ans * (n - i - 2) < (sum - p[i + 1]) * best_den) {
+            ans = sum - p[i + 1];
+            best_den = n - i - 2;
+        }
+    }
+    sum = temp;
+
+    F0R(i, n - 2) {
+        sum -= a[i];
+        if (ans * (n - i - 2) == (sum - p[i + 1]) * best_den) {
+            cout << i + 1 << "\n";
         }
     }
 
-    cout << ans << "\n";
 
 }
 
 signed main() {
-    setIO("hps");
+    setIO("homework");
     int T = 1;
     // cin >> T;
     for (test = 1; test <= T; test++) solve();
