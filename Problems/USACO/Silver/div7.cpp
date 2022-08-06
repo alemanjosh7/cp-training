@@ -2,6 +2,7 @@
 using namespace std;
 
 using ll = long long;
+#define int ll
 using db = long double;
 using str = string;
 using pi = pair<int, int>;
@@ -28,6 +29,8 @@ using vpl = V<pl>;
 #define rall(x) x.rbegin(), x.rend() 
 #define sor(x) sort(all(x)) 
 #define pb push_back
+#define yes cout << "Y" << "E" << "S\n";
+#define no cout << "N" << "O\n";
 
 #define FOR(i,a,b) for (int i = (a); i < (b); ++i)
 #define F0R(i,a) FOR(i,0,a)
@@ -43,7 +46,6 @@ const db PI = acos((db)-1);
 const int ddef[4]{ 1,0,-1,0 }, dataq[4]{ 0,1,0,-1 };
 mt19937 rng((uint32_t)chrono::steady_clock::now().time_since_epoch().count());
 template<class T> using pqg = priority_queue<T, vector<T>, greater<T>>;
-
 void setIO(string name = "") {
     ios_base::sync_with_stdio(0); cin.tie(0);
     if (sz(name)) {
@@ -51,7 +53,6 @@ void setIO(string name = "") {
         freopen((name + ".out").c_str(), "w", stdout);
     }
 }
-
 void _print(char i) { cerr << i; }
 void _print(string i) { cerr << i; }
 void _print(float i) { cerr << i; }
@@ -62,32 +63,25 @@ template<typename x, typename y> void _print(pair<x, y>& t) { cerr << "{";_print
 template<typename x> void _print(x& t) { cerr << "{"; for (int i = 0;i < (int)t.size();i++) { _print(t[i]); if (i < (int)t.size() - 1) cerr << ", "; } cerr << "}"; }
 template<typename x, typename... y> void _print(x a, y... b) { _print(a);if (sizeof...(b)) cerr << ", ";_print(b...); }
 #define dbg(x...) cerr<<"["<<#x<<"] = [";_print(x);cerr<<"]\n";
-
 int test;
 
 void solve() {
-    freopen("div7.in", "r", stdin);
-    freopen("div7.out", "w", stdout);
+
     int n; cin >> n;
-    vl a(n);
-    each(x, a) cin >> x;
-    vl div(7, 1e9);
-    ll sum = 0, ans = 0;
-    div[0] = -1;
+    vi a(7, -1);
+    int sum = 0, ans = 0;
     F0R(i, n) {
-        sum = (sum + a[i]) % 7;
-        ans = max(ans, i - div[sum]);
-        if (div[sum] == 1e9) div[sum] = i;
+        int x; cin >> x;
+        sum += x;
+        if (a[sum % 7] == -1 && sum % 7 != 0) a[sum % 7] = i;
+        ans = max(ans, i - a[sum % 7]);
     }
-
-    cout << ans << "\n";
-
+    cout << ans;
 }
 
-int main() {
-    setIO("");
+signed main() {
+    setIO("div7");
     int T = 1;
     // cin >> T;
     for (test = 1; test <= T; test++) solve();
-    return 0;
 }
